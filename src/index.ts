@@ -1,15 +1,38 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { HTTPException } from "hono/http-exception";
+import { prettyJSON } from "hono/pretty-json";
+import { HTTP404, errorToResponse } from "./_error.js";
+import type { Context, Env } from "./_hono.js";
 
-const app = new Hono()
+const app = new Hono<Env>();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.onError((error, _c) => {
+  if (error instanceof HTTPException) {
+    return error.getResponse();
+  }
 
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+  return errorToResponse(error);
+});
+app.notFound(() => {
+  throw HTTP404;
+});
+
+// TODO: Remove if you don't need
+app.use("*", cors());
+app.use("*", prettyJSON());
+
+app.get("/", (c: Context) => {
+  return c.text("Hello Hono!");
+});
+
+serve(
+  {
+    fetch: app.fetch,
+    port: 3000,
+  },
+  (info) => {
+    console.log(`Server is running on http://localhost:${info.port}`);
+  },
+);
