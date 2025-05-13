@@ -1,22 +1,29 @@
 {
-	"name": "hono-template",
-	"type": "module",
-	"scripts": {
-		"dev": "tsx watch src/index.ts",
-		"build": "tsc",
-		"start": "node dist/index.js"
-	},
-	"dependencies": {
-		"@hono/node-server": "^1.14.1",
-		"hono": "^4.7.9"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@types/node": "^20.11.17",
-		"tsx": "^4.7.1",
-		"typescript": "^5.8.3"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome"]
-	}
+  "name": "hono-template",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "biome:fix": "biome check --write",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.1",
+    "hono": "^4.7.9"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^20.11.17",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*": ["biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@biomejs/biome"]
+  }
 }
