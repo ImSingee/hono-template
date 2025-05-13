@@ -27,10 +27,16 @@ app.get("/", (c: Context) => {
   return c.text("Hello Hono!");
 });
 
+const port = Number.parseInt(process.env.PORT || "3000");
+if (Number.isNaN(port)) {
+  throw new Error("Invalid PORT");
+}
+
 serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    hostname: "0.0.0.0",
+    port,
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
