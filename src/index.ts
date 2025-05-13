@@ -3,8 +3,8 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import { prettyJSON } from "hono/pretty-json";
-import { HTTP404, errorToResponse } from "./error.js";
-import type { Context, Env } from "./hono.js";
+import { HTTP404, errorToResponse } from "./error";
+import type { Context, Env } from "./hono";
 
 const app = new Hono<Env>();
 
